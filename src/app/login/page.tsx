@@ -6,20 +6,20 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase"; // Import the initialized auth
 import Header from "@/components/layout/Header";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/"); // Redirect after successful login
+      router.push("/");
     } catch (error: any) {
       console.error("Error logging in: ", error);
-      setError(error.message || "Failed to log in"); // Display Firebase error message
+      setError(error.message || "Failed to log in");
     }
   };
 

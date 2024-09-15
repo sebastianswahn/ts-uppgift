@@ -22,12 +22,12 @@ function AllThreadsPage() {
 
       threadsData.sort((a, b) => {
         const dateA =
-          a.creationDate instanceof Timestamp
-            ? a.creationDate.toDate()
+          (a.creationDate as any) instanceof Timestamp
+            ? (a.creationDate as any).toDate()
             : new Date(a.creationDate);
         const dateB =
-          b.creationDate instanceof Timestamp
-            ? b.creationDate.toDate()
+          (b.creationDate as any) instanceof Timestamp
+            ? (b.creationDate as any).toDate()
             : new Date(b.creationDate);
         return dateB.getTime() - dateA.getTime();
       });
@@ -89,9 +89,9 @@ function AllThreadsPage() {
                           minute: "2-digit",
                           second: "2-digit",
                         }).format(
-                          thread.creationDate instanceof Timestamp
-                            ? thread.creationDate.toDate() // Convert Firestore Timestamp to JS Date
-                            : new Date(thread.creationDate) // Use JavaScript Date if already a date
+                          (thread.creationDate as any) instanceof Timestamp
+                            ? (thread.creationDate as any).toDate()
+                            : new Date(thread.creationDate)
                         )
                       : "Unknown date"}
                   </p>

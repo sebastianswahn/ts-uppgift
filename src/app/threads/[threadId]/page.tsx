@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -51,8 +51,10 @@ const ThreadDetailPage: React.FC = () => {
     });
 
     const pathSegments = pathname?.split("/");
-    const threadId = pathSegments ? pathSegments[pathSegments.length - 1] : null;
-    
+    const threadId = pathSegments
+      ? pathSegments[pathSegments.length - 1]
+      : null;
+
     if (threadId) {
       const fetchThread = async () => {
         try {
@@ -117,7 +119,9 @@ const ThreadDetailPage: React.FC = () => {
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const pathSegments = pathname?.split("/");
-    const threadId = pathSegments ? pathSegments[pathSegments.length - 1] : null;
+    const threadId = pathSegments
+      ? pathSegments[pathSegments.length - 1]
+      : null;
     if (threadId && newComment.trim() && currentUserUID) {
       try {
         const newCommentData = {
@@ -179,7 +183,7 @@ const ThreadDetailPage: React.FC = () => {
         {thread ? (
           <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8 mb-8">
             <div className="flex justify-between items-center">
-              <h1 className="text-3xl font-bold text-purple-700 dark:text-purple-300 uppercase">
+              <h1 className="text-3xl font-bold text-emerald-500">
                 {thread.title}
               </h1>
               {isLoggedIn && thread.creator === currentUserUID && (
@@ -191,11 +195,16 @@ const ThreadDetailPage: React.FC = () => {
                       });
                       setIsLocked(!isLocked);
                     } catch (error) {
-                      console.error("Error updating thread lock status:", error);
+                      console.error(
+                        "Error updating thread lock status:",
+                        error
+                      );
                     }
                   }}
                   className={`p-3 rounded-md text-white font-semibold ${
-                    isLocked ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
+                    isLocked
+                      ? "bg-red-500 hover:bg-red-600"
+                      : "bg-green-500 hover:bg-green-600"
                   } transition-all`}
                 >
                   {isLocked ? "Unlock Thread" : "Lock Thread"}
@@ -206,9 +215,19 @@ const ThreadDetailPage: React.FC = () => {
               {thread.description}
             </p>
             <div className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-              <p>Created by: <span className="font-semibold text-indigo-600 dark:text-indigo-400">{creatorName}</span></p>
-              <p>Created at: {new Date(thread.creationDate).toLocaleString()}</p>
-              <p>Category: <span className="font-semibold">{thread.category}</span></p>
+              <p>
+                Created by:{" "}
+                <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                  {creatorName}
+                </span>
+              </p>
+              <p>
+                Created at: {new Date(thread.creationDate).toLocaleString()}
+              </p>
+              <p>
+                Category:{" "}
+                <span className="font-semibold">{thread.category}</span>
+              </p>
             </div>
           </div>
         ) : (
@@ -216,7 +235,6 @@ const ThreadDetailPage: React.FC = () => {
         )}
 
         <div className="mt-8">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Comments</h2>
           {isLoggedIn && !isLocked && (
             <form onSubmit={handleCommentSubmit} className="mb-6">
               <textarea
@@ -228,23 +246,29 @@ const ThreadDetailPage: React.FC = () => {
               />
               <button
                 type="submit"
-                className="mt-4 bg-indigo-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 transition-all"
+                className="mt-4 bg-emerald-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-emerald-700 transition-all"
               >
                 Submit Comment
               </button>
             </form>
           )}
-          
+
           {sortedComments.length > 0 ? (
             sortedComments.map((comment) => (
               <div
                 key={comment.id}
                 className={`bg-gray-100 dark:bg-gray-700 shadow-lg rounded-lg p-6 mb-6 relative ${
-                  comment.id === markedAnswerId ? "border-4 border-green-600" : ""
+                  comment.id === markedAnswerId
+                    ? "border-4 border-green-600"
+                    : ""
                 }`}
               >
                 <div className="flex justify-between">
-                  <p className="text-sm text-gray-500 dark:text-gray-300 font-semibold">
+                  <h2 className="text-2xl font-bold dark:text-white mb-4">
+                    Comments
+                  </h2>
+
+                  <p className="text-sm text-gray-700 font-semibold">
                     Comment by: {usernames[comment.creator] || "Unknown"}
                   </p>
                   {isLoggedIn && thread?.creator === currentUserUID && (
@@ -258,19 +282,24 @@ const ThreadDetailPage: React.FC = () => {
                     </button>
                   )}
                 </div>
-                <p className="mt-2 text-gray-700 dark:text-gray-100 whitespace-pre-wrap">{comment.content}</p>
+                <p className="mt-2 text-gray-700 dark:text-gray-100 whitespace-pre-wrap">
+                  {comment.content}
+                </p>
                 <p className="mt-4 text-gray-500 dark:text-gray-400 text-xs">
                   {comment.createdAt.toDate().toLocaleString()}
                 </p>
                 {comment.id === markedAnswerId && (
-                  <p className="text-green-500 text-xs mt-2">Marked as Top Comment</p>
+                  <p className="text-green-500 text-xs mt-2">
+                    Marked as Top Comment
+                  </p>
                 )}
                 <hr className="mt-4" />
-                <CommentOnComment />
               </div>
             ))
           ) : (
-            <p className="text-gray-500 dark:text-gray-300">{isLocked ? "This thread is locked." : "No comments yet."}</p>
+            <p className="text-gray-500 dark:text-gray-300">
+              {isLocked ? "This thread is locked." : "No comments yet."}
+            </p>
           )}
         </div>
       </div>

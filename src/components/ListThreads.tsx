@@ -12,8 +12,6 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-type ThreadCategory = "THREAD" | "QNA";
-
 function ListThreads() {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [users, setUsers] = useState<{ [key: string]: User }>({});

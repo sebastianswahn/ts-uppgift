@@ -1,35 +1,37 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { auth, db } from "@/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, User } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import Header from "@/components/layout/Header";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
-function RegisterPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState(""); // New state for username
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+const RegisterPage: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user: User = userCredential.user;
 
-      // Store the username in Firestore
       await setDoc(doc(db, "users", user.uid), {
         userName: username,
         email: user.email,
-        UserUID: user.uid
+        UserUID: user.uid,
       });
 
       setSuccess("User registered successfully!");
       setError("");
-      router.push("/"); // Redirect to home page or another page
+      router.push("/");
     } catch (err: any) {
       if (err.code === "auth/email-already-in-use") {
         setError("User with email already exists.");
@@ -90,6 +92,6 @@ function RegisterPage() {
       </div>
     </div>
   );
-}
+};
 
 export default RegisterPage;
